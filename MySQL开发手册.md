@@ -54,7 +54,7 @@ select col1,col2 from user join (select id from user where sex = "m" order by so
 **select_type**  
 简单查询或复杂查询，SIMPLE值意味着不包含子查询或UNION，其它就是复杂查询
 
-**table**
+**table**  
 显示对应行访问的表或别名
 
 **type**
@@ -69,5 +69,31 @@ select col1,col2 from user join (select id from user where sex = "m" order by so
 * const,system：当MySQL对查询某部分进行优化，并转换为一个常量时，使用这些类型访问。如将主键置于where列表中，MySQL就能将该查询转换为一个常量，system是const类型的特例，当查询的表只有一行的情况下使用system。
 * NULL：MySQL在优化过程中分解语句，执行时甚至不用访问表或索引，例如从一个索引列里选取最小值可以通过单独索引查找完成。
 
+**possible_keys**  
+这一列显示了查询可以使用哪些索引，这是基于查询访问的列和使用的比较操作符来判断的。这个列表是在优化过程的早期创建的，因此，有些罗列出来的索引可能对于后续优化过程是没用的。
+
+**key**  
+这一列显示了MySQL决定采用哪个索引来优化对该表的访问。如果该索引没有出现在possible_keys列中，那么MySQL选用它是出于另外的原因，例如，它可能选择了一个覆盖索引，哪怕没有WHERE子句。
+
+**key_len**  
+该列显示MySQL在索引里使用的字节数。如果MySQL正在使用的只是索引里的某些列，那么就可以用这个值来算出具体是哪些列。key_len通过查找表的定义而被计算出，而不是表中的数据。
+
+**ref**  
+这一列显示了之前的表在key列记录的索引中查找值所用的列或常量。
+
+**row**  
+这一列是MySQL估计为了找到所需的行而读取的行数。是个估值，不一定精确。
+
+**filtered**  
+它显示的是针对表里符合某个条件的记录数的百分比所做的一个悲观估算。
+
+**Extra**  
+这一列显示的是不适合在其他列显示的额外信息。
+
+* Using index：此值表示MySQL将使用覆盖索引，以避免访问表。不要把覆盖索引和index访问类型弄混了。
+* Using where：这意味着MySQL服务器将在存储引擎检索后再进行过滤。许多WHERE条件里涉及索引中的列，当它读取索引时，就能被存储引擎检验，因此不是所有带WHERE子句的查询都会显示"Using where"。有时，"Using where"的出现就是一个暗示：查询可受益于不同的索引。
+* Using temporary：这意味着MySQL在对查询结果排序时会使用一个临时表。
+* Using filesort：这意味着MySQL会对结果使用一个外部索引排序，而不是按索引次序从表里读取行。
+* Range checked for each record(index map:N)：这个值意味着没有好用的索引，新的索引将在联接的每一行上重新估算。N是显示在possible_keys列中索引的位图，并且是冗余的。
 
 ## 特定案例优化
