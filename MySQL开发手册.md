@@ -6,6 +6,7 @@
 * <a href="#p2">创建合适的索引</a>
 * <a href="#p3">EXPLAIN返回值说明</a>
 * <a href="#p4">特定案例优化</a>
+    * <a href="#p41">分页设计</a>
 
 <p></p>
 <p></p>
@@ -108,3 +109,12 @@ select col1,col2 from user join (select id from user where sex = "m" order by so
 * Range checked for each record(index map:N)：这个值意味着没有好用的索引，新的索引将在联接的每一行上重新估算。N是显示在possible_keys列中索引的位图，并且是冗余的。
 
 ## <a name="p4">特定案例优化</a>
+
+### <a name="p41">分页设计</a>
+
+假设有个视频库，有如下分类：  
+类型：全部 | 偶像爱情 | 古装历史 | 都市生活 | 历险科幻 | 真人动漫  
+地区：全部 | 内地 | 美国 | 英国 | 韩国 | 泰国  
+年份：全部 | 2020 | 2019 | 2018 | 2017 | 2016  
+排序：最新 | 最热 | 好评
+
