@@ -1,6 +1,17 @@
 # MySQL开发手册
 
-## 选择合适的数据类型
+## 索引
+
+* <a href="#p1">选择合适的数据类型</a>
+* <a href="#p2">创建合适的索引</a>
+* <a href="#p3">EXPLAIN返回值说明</a>
+* <a href="#p4">特定案例优化</a>
+
+<p></p>
+<p></p>
+<p></p>
+
+## <a name="p1">选择合适的数据类型</a>
 
 **更小的通常更好**
 * 选择你认为不会超过的最小范围
@@ -21,7 +32,7 @@
 可为Null的列MySQL需要特殊处理，使得索引、索引统计、值的比较更多复杂。  
 有个例外，当使用Innodb的列很多值为Null,少数为非Null的时候有很好的效率，但不适用MyISAM。
 
-## 创建合适的索引
+## <a name="p2">创建合适的索引</a>
 
 **独立的列**
 
@@ -46,7 +57,7 @@
 下面这个查询显示了利用(sex,sort)组合索引进行排序和分页（id为主键）：  
 select col1,col2 from user join (select id from user where sex = "m" order by sort desc limit 10000,10) as x on  user.id = x.id
 
-## EXPLAIN返回值说明
+## <a name="p3">EXPLAIN返回值说明</a>
 
 **id**  
 编号，一条SQL语句可能包含多个子查询。id相同时，执行顺序由上到下。
@@ -96,4 +107,4 @@ select col1,col2 from user join (select id from user where sex = "m" order by so
 * Using filesort：这意味着MySQL会对结果使用一个外部索引排序，而不是按索引次序从表里读取行。
 * Range checked for each record(index map:N)：这个值意味着没有好用的索引，新的索引将在联接的每一行上重新估算。N是显示在possible_keys列中索引的位图，并且是冗余的。
 
-## 特定案例优化
+## <a name="p4">特定案例优化</a>
