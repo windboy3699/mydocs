@@ -50,7 +50,7 @@ API Gateway也有一些缺点。它是一个高可用的组件，必须要开发
 
 ## API Gateway实现
 
-![微服务架构.png](https://codeup.aliyun.com/5f2ca2c66207a1a8b17f7a9e/WanqianDocs/raw/master/PanXd/image/soa.png)
+![微服务架构.png](https://raw.githubusercontent.com/windboy3699/mydocs/master/images/soa.png)
 
 #### 框架选择
 
