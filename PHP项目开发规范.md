@@ -35,11 +35,11 @@ BaseService
     |——Models
     └——Services
 ```
-BaseService域名：service.base.gate.wqjgj.com
+BaseService域名：service.base.gate.example.com
 
-Appmanager：应用管理，域名：service.base.gate.wqjgj.com/appmanager  
-Usercenter：用户中心  域名：service.base.gate.wqjgj.com/usercenter  
-Authorization：权限认证  域名：service.base.gate.wqjgj.com/authorization  
+Appmanager：应用管理，域名：service.base.gate.example.com/appmanager  
+Usercenter：用户中心  域名：service.base.gate.example.com/usercenter  
+Authorization：权限认证  域名：service.base.gate.example.com/authorization  
 Appmanager、Usercenter、Authorization是BaseService下面的3个子模块，本来它们是互相独立的服务，不过考虑到这些服务代码不多如果每个独立成一个仓库，管理起来会有麻烦，所以把它们整合起来放到BaseService下面，以后有新的小模块也可以加进来。  
 单模块的应用，URI中直接以'/'开始，不需要ModuleName前缀。
 
