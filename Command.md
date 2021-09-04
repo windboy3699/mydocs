@@ -1,5 +1,15 @@
 # 常用命令
 
+### 查看系统配置
+
+命令 | 功能
+---|---
+cat /proc/cpuinfo \| grep "physical id" \| sort \| uniq \| wc -l | 查看物理CPU个数
+cat /proc/cpuinfo \| grep "cpu cores" \| uniq | 查看每个物理CPU中core的个数(即核数)
+cat /proc/cpuinfo \| grep "processor" \| wc -l | 查看逻辑CPU的个数(通过超线程等方式)
+grep MemTotal /proc/meminfo | 查看内存总量
+grep MemFree /proc/meminfo | 查看空闲内存量
+
 ### System
 
 命令 | 功能 | 说明
@@ -34,7 +44,7 @@ ssh -p 12333 root@216.230.230.114 | p:端口号
 find . -name "*.php" \| xargs grep "test" | 搜索文件内容
 kill -INT \`cat /usr/local/php/var/run/php-fpm.pid\` | 关闭php-fpm
 kill -USR2 \`cat /usr/local/php/var/run/php-fpm.pid\` | 重启php-fpm
-scp local_file remote_username@remote_ip\:remote_folder | 本机文件复制到远程服务器上
+scp -P 96 local_file remote_username@remote_ip\:remote_folder | 本机文件复制到远程服务器上 P:端口号
 scp -r remote_username@remote_ip\:remote_file local_folder | 远程服务器上的文件复制到本机
 nohup command > myout.file 2>&1 & | 
 crontab: minute hour day month week command | 
@@ -55,13 +65,15 @@ awk '{arr[$1]++}END{for(key in arr) print arr[key],key}' access.log | sort -t " 
 mysql -S mysql.sock -h 127.0.0.1 -P 3306 -u root -p | P:端口号, p:密码, u与root之间可以不用加空格,其它也一样 
 /etc/init.d/mysqld start | 启动mysql
 /usr/local/php/sbin/php-fpm | 启动php-fpm
-kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid` | 终止php-fpm
+kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid` | 重启php-fpm，关闭把-USR2换成-INT
 /usr/local/nginx/sbin/nginx | 启动nginx
 /usr/local/nginx/sbin/nginx -t | 验证配置是否正确
 /usr/local/nginx/sbin/nginx -s reload | 重启服务
 sudo /usr/local/bin/memcached -m 32 -p 11211 -d -u root | m:最大内存用量, p:端口, d:以daemon方式运行, u:绑定指定运行进程用户
 /usr/local/bin/redis-server /usr/local/etc/redis.conf | 配置文件
 sudo /Users/username/Library/Tomcat/bin/startup.sh | Mac启动Tomcat
+zookeeper/bin/zkServer start | 启动zookeeper
+kafka/bin/kafka-server-start -daemon confpath/server.properties | 启动kafka
 
 ### Vim
 命令 | 功能 | 说明
@@ -89,3 +101,6 @@ git config --global user.email [email] |
 git config --list | 
 git remote -v | 
 git log --pretty=format:"%C(bold white)%h%Creset %cd %C(bold blue)%cn%Creset %s" --graph | 
+
+### Mac
+launchctl load /Users/xxxx/rsync.plist
